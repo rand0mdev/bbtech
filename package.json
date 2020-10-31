@@ -1,0 +1,29 @@
+{
+  "name": "bbtech",
+  "version": "1.0.0",
+  "description": "BBTech landing page website",
+  "main": "index.html",
+  "repository": "https://github.com/rand0mdev/bbtech.git",
+  "author": "Bechir Ba",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "npm-run-all clean copyfonts watch",
+    "scss": "node-sass assets/scss/* -o build --output-style compressed",
+    "watch": "yarn run scss --watch",
+    "clean": "rm -rf build/ && mkdir build",
+    "copyfonts": "yarn copyfiles -f node_modules/@fortawesome/fontawesome-free/webfonts/* build/fonts"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
+    "popper": "^1.0.1"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.0",
+    "node-sass": "^4.14.1",
+    "npm-run-all": "^4.1.5"
+  }
+}
