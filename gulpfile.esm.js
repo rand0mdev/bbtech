@@ -30,10 +30,8 @@ const app = {
     environment: process.env.APP_ENV
 };
 
-// Conventional Changelog preset
-const preset = 'angular';
-// print output of commands into the terminal
-const stdio = 'inherit';
+const preset = 'angular'; // Conventional Changelog preset
+const stdio = 'inherit'; // print output of commands into the terminal
 
 function clean(cb) {
     del(['build/'])
@@ -92,9 +90,6 @@ function stylesheet(cb) {
 }
 
 function streamTasks(cb) {
-
-    console.log(process.env.GOOGLE_KEY);
-
     browserSync.init({
         server: {
             baseDir: './'
@@ -199,9 +194,9 @@ function githubRelease(done) {
 }
 
 exports.release = series(
-    // bumpVersion,
-    // changelog,
-    // commitTagPush,
+    bumpVersion,
+    changelog,
+    commitTagPush,
     githubRelease
 );
 
