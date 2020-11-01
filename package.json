@@ -8,11 +8,14 @@
   "author": "Bechir Ba",
   "main": "index.html",
   "scripts": {
+    "start": "node index.js",
     "clean": "gulp clean",
     "build": "gulp build",
     "watch": "gulp"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@fortawesome/fontawesome-free": "^5.15.1",
@@ -37,5 +40,9 @@
     "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
     "popper": "^1.0.1"
+  },
+  "engines": {
+    "node": "15.x",
+    "yarn": "1.x"
   }
 }
