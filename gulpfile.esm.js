@@ -1,36 +1,34 @@
 'use strict';
 
-import gulp, {
-    src,
-    dest,
-    watch,
-    parallel,
-    series
-} from 'gulp';
-import { resolve } from 'path';
+import { src, dest, watch, parallel, series } from 'gulp';
 const del = require('delete');
 const conventionalRecommendedBump = require('conventional-recommended-bump');
 const conventionalGithubReleaser = require('conventional-github-releaser');
 const execa = require('execa');
 const fs = require('fs');
-const {
-    promisify
-} = require('util');
+const { promisify } = require('util');
 const dotenv = require('dotenv');
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
-const {
-    exec
-} = require('child_process');
+const twig = require('gulp-twig');
+const htmlmin = require('gulp-htmlmin');
+const { exec } = require('child_process');
+const browserSync = require('browser-sync');
 
 // load environment variables
 const result = dotenv.config();
-
 if (result.error) {
     throw result.error;
 }
+
+const app = {
+    name: 'BBTech',
+    title: 'Digital Agency made easy',
+    description: 'Website and mobile applications development',
+    environment: process.env.APP_ENV
+};
 
 // Conventional Changelog preset
 const preset = 'angular';
@@ -39,6 +37,7 @@ const stdio = 'inherit';
 
 function clean(cb) {
     del(['build/'])
+    cleanHtml(cb);
     cb();
 }
 
@@ -52,40 +51,63 @@ function cleanStylesheet(cb) {
     cb();
 }
 
+function cleanHtml(cb) {
+    del(['./index.html']);
+    cb();
+}
+
+function generateHTML(cb) {
+    src('./src/index.twig')
+        .pipe(twig({
+            data: {
+                App: app
+            }
+        }))
+        .pipe(htmlmin({ collapseWhitespace: true }))
+        .pipe(dest('./'));
+    cb();
+}
+
 function javascript(cb) {
-    return src('./assets/js/*.js')
+    return src('./src/js/*.js')
         .pipe(babel())
         .pipe(uglify())
         .pipe(rename({
             extname: '.min.js'
         }))
-        .pipe(dest('build/'));
+        .pipe(dest('build/'))
+        .pipe(browserSync.stream());
 }
 
 function stylesheet(cb) {
-    return src('./assets/scss/**/*.scss')
+    return src('./src/scss/**/*.scss')
         .pipe(sass({
             outputStyle: 'compressed'
         }))
         .pipe(rename({
             extname: '.min.css'
         }))
-        .pipe(dest('build/'));
-}
-
-function copyFonts(cb) {
-    exec("yarn copyfiles -f node_modules/@fortawesome/fontawesome-free/webfonts/* build/fonts");
-    cb();
+        .pipe(dest('build/'))
+        .pipe(browserSync.stream());
 }
 
 function streamTasks(cb) {
-    watch('./assets/scss/**/*.scss', series(cleanStylesheet, stylesheet));
-    watch('./assets/js/*.js', series(cleanJavascript, javascript));
-    cb();
-}
 
-function build(cb) {
-    series(clean, parallel(copyFonts, stylesheet, javascript));
+    console.log(process.env.GOOGLE_KEY);
+
+    browserSync.init({
+        server: {
+            baseDir: './'
+        }
+    });
+
+    let watchConfig = {
+        ignoreInitial: false
+    };
+
+    watch('./src/index.twig', watchConfig, series(cleanHtml, generateHTML)).on('change', browserSync.reload);
+    watch('./src/scss/**/*.scss', watchConfig, series(cleanStylesheet, stylesheet));
+    watch('./src/js/*.js', watchConfig, series(cleanJavascript, javascript));
     cb();
 }
 
@@ -93,15 +115,15 @@ function getCurrentBranchName() {
     return new Promise((resolve, reject) => {
         exec(
             "git branch | grep '*' | tr -d ' *'",
-            function(error, stdout, stderr) {
-                if(error) {
+            function (error, stdout, stderr) {
+                if (error) {
                     reject();
                     return;
                 }
 
-                if(stderr) {
+                if (stderr) {
                     reject(stderr);
-                    return; 
+                    return;
                 }
 
                 resolve(stdout);
@@ -160,7 +182,7 @@ async function commitTagPush() {
     // await execa('git', ['push', '--set-upstream', 'origin '+ branch, '--follow-tags'], {
     //     stdio
     // });
-    await exec('git push --set-upstream origin '+ branch + ' --follow-tags', {
+    await exec('git push --set-upstream origin ' + branch + ' --follow-tags', {
         stdio
     });
 }
@@ -177,11 +199,12 @@ function githubRelease(done) {
 }
 
 exports.release = series(
-    bumpVersion,
-    changelog,
-    commitTagPush,
+    // bumpVersion,
+    // changelog,
+    // commitTagPush,
     githubRelease
 );
 
-exports.build = build;
-exports.default = series(clean, parallel(build, copyFonts, streamTasks));
+exports.clean = clean;
+exports.build = series(clean, parallel(stylesheet, javascript, generateHTML));
+exports.default = series(clean, parallel(stylesheet, javascript, generateHTML), streamTasks);
