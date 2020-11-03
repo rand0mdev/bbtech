@@ -8,7 +8,77 @@
     <link rel="stylesheet" href="/build/app.min.css">
 </head>
 <body>
-    <h1>{{ App.title }}!</h1>
+    <header>
+        <div class="collapse bg-light" id="navbarHeader">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-5 py-4">
+                <h4 class="text-dark">{{ App.name }}</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Our value</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-5 py-4">
+                <h4 class="text-dark">Our services</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#">Web Development</a></li>
+                    <li><a href="#">Mobile App Development</a></li>
+                    <li><a href="#">Digital Marketing</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-2 py-4">
+                <h4 class="text-dark">Contact</h4>
+                <ul class="list-unstyled">
+                  <li><i class="fa fa-map-marker-alt"></i> Cité concorde</li>
+                  <li><a href="https://linkedin.com/rand0mdev" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                  <li><a href="#" class="text-dark"><i class="fa fa-comment-alt"></i> Get In Touch</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="navbar navbar-light bg-light box-shadow">
+          <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center bold">
+                {{ App.name }}
+            </a>
+            <a class="navbar-toggler pointer" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </a>
+          </div>
+        </div>
+    </header>
+    <main role="main">
+
+        <section class="jumbotron">
+          <div class="container">
+              <div class="d-flex justify-content-between">
+                  <div class="intro">
+                      <h1 class="jumbotron-heading">Better services.<br>Better world.</h1>
+                      <p class="lead text-muted">We offer height quality services for better world.</p>
+                  </div>
+                  <div class="hero">
+                      
+                  </div>
+              </div>
+          </div>
+        </section>
+  
+    </main>
+    <footer class="text-muted">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <p class="small">© {{ App.name }}Made with <i class="fa fa-heart text-danger"></i> by <a href="https://github.com/rand0mdev">rand0mdev</a></p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href=""><i class="fab fa-linkedin"></i></a></li>
+                    <li class="list-inline-item"><a href=""><i class="fab fa-github text-dark"></i></a></li>
+                </ul>
+                <a href="#"><i class="fa fa-angle-up fa-2x"></i></a>
+            </div>
+        </div>
+    </footer>
 
     {% if App.environment == 'production' %}
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
