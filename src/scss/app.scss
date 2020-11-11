@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
-$fa-font-path: "/assets/fonts";
-$dark: #3b4754;
 
-$font-family-sans-serif:    "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+$fa-font-path: "/assets/fonts" ;
+
+$dark: #3b4754;
+$gray-900: $dark;
+$font-family-sans-serif:            "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 25 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 @import "../../node_modules/@fortawesome/fontawesome-free/scss/regular.scss";
@@ -18,8 +26,19 @@ $font-family-sans-serif:    "Open Sans", -apple-system, BlinkMacSystemFont, "Seg
 }
 
 .navbar-brand,
-h1{
+h1,
+h2,
+h3,
+h4{
     color: $dark!important;
+}
+
+h4 {
+    font-size: 1.1rem;
+}
+
+.navbar-brand,
+h1{
     font-weight: 700;
 }
 
@@ -31,4 +50,11 @@ h1{
     .lead {
         font-family: cursive, fantasy;
     }    
+}
+
+#our-services {
+    .card {
+        box-shadow: $box-shadow-sm;
+        border:none
+    }
 }
